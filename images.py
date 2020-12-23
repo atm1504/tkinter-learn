@@ -4,9 +4,9 @@ from PIL import ImageTk, Image
 
 root = Tk()
 root.title("Using Images")
-root.iconbitmap("./quality.ico")
+root.iconbitmap("./images/quality.ico")
 
-my_img = ImageTk.PhotoImage(Image.open("./quality.png"))
+my_img = ImageTk.PhotoImage(Image.open("./images/quality.png"))
 my_label = Label(image=my_img)
 my_label.pack()
 
