@@ -3,8 +3,6 @@ from tkinter import *
 root = Tk()
 root.title("Calculator")
 
-res = 0
-
 # Input box
 e = Entry(root, width=29, borderwidth=5)
 e.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
@@ -18,28 +16,55 @@ def button_click(number):
 
 # Clear button functionalities implemented
 def button_clear():
-    global res
-    res = 0
     e.delete(0, END)
-
 
 # sum
 def button_add():
-    global res
+    global f_n
+    global math
+    math="addition"
     f_n = int(e.get())
-    res += f_n
     e.delete(0, END)
-    print(res)
+
+# subtract
+def button_subtract():
+    global f_n
+    global math
+    math="subtraction"
+    f_n = int(e.get())
+    e.delete(0, END)
+
+# multiply
+def button_multiply():
+    global f_n
+    global math
+    math="multiplication"
+    f_n = int(e.get())
+    e.delete(0, END)
+
+# divide
+def button_divide():
+    global f_n
+    global math
+    math="division"
+    f_n = int(e.get())
+    e.delete(0, END)
 
 # prints the equal
 def button_equal():
-    global res
     s_n = int(e.get())
-    res += s_n
     e.delete(0, END)
+    res = 0
+    if math == "addition":
+        res = f_n + s_n
+    elif math == "subtraction":
+        res = f_n - s_n
+    elif math == "multiplication":
+        res = f_n * s_n
+    elif math == "division" and s_n != 0:
+        res = f_n / s_n
     e.insert(0, str(res))
     print(res)
-
 
 
 # Numbers on calculator
@@ -57,6 +82,10 @@ button_0 = Button(root, text="0", padx=40, pady=20, command=lambda: button_click
 button_add = Button(root, text="+", padx=39, pady=20, command=button_add)
 button_equal = Button(root, text="=", padx=90, pady=20, command=button_equal)
 button_clear = Button(root, text="Clear", padx=79, pady=20, command=button_clear)
+
+button_subtract = Button(root, text="-", padx=40, pady=20, command=button_subtract)
+button_multiply = Button(root, text="*", padx=40, pady=20, command=button_multiply)
+button_divide = Button(root, text="/", padx=40, pady=20, command=button_divide)
 
 # show the number buttons on the screen
 button_1.grid(row=3,column=0)
@@ -77,6 +106,9 @@ button_clear.grid(row=4, column=1, columnspan=2)
 button_add.grid(row=5, column=0)
 button_equal.grid(row=5, column=1,columnspan=2)
 
+button_subtract.grid(row=6, column=0)
+button_multiply.grid(row=6, column=1)
+button_divide.grid(row=6,column=2)
 #-----------------------------------------------------
 
 
