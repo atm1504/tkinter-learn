@@ -3,15 +3,44 @@ from tkinter import *
 root = Tk()
 root.title("Calculator")
 
+res = 0
+
 # Input box
 e = Entry(root, width=29, borderwidth=5)
 e.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
 
-# Add button
+# Numbers click functionlities
 def button_click(number):
     #e.delete(0, END)
-    e.insert(0, number)
-    return
+    current = e.get()
+    e.delete(0,END)
+    e.insert(0, str(current) + str(number))
+
+# Clear button functionalities implemented
+def button_clear():
+    global res
+    res = 0
+    e.delete(0, END)
+
+
+# sum
+def button_add():
+    global res
+    f_n = int(e.get())
+    res += f_n
+    e.delete(0, END)
+    print(res)
+
+# prints the equal
+def button_equal():
+    global res
+    s_n = int(e.get())
+    res += s_n
+    e.delete(0, END)
+    e.insert(0, str(res))
+    print(res)
+
+
 
 # Numbers on calculator
 button_1 = Button(root, text="1", padx=40, pady=20, command=lambda: button_click(1))
@@ -25,9 +54,9 @@ button_8 = Button(root, text="8", padx=40, pady=20, command=lambda: button_click
 button_9 = Button(root, text="9", padx=40, pady=20, command=lambda: button_click(9))
 button_0 = Button(root, text="0", padx=40, pady=20, command=lambda: button_click(0))
 
-button_add = Button(root, text="+", padx=39, pady=20, command=lambda: button_click(0))
-button_equal = Button(root, text="=", padx=90, pady=20, command=lambda: button_click(0))
-button_clear = Button(root, text="Clear", padx=79, pady=20, command=lambda: button_click(0))
+button_add = Button(root, text="+", padx=39, pady=20, command=button_add)
+button_equal = Button(root, text="=", padx=90, pady=20, command=button_equal)
+button_clear = Button(root, text="Clear", padx=79, pady=20, command=button_clear)
 
 # show the number buttons on the screen
 button_1.grid(row=3,column=0)
