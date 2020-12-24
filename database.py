@@ -53,11 +53,28 @@ def query():
 
     c.execute("SELECT *, oid from addresses ")
     records = c.fetchall();
-    print(records)
 
-    show_label = Label(root, text=records)
-    show_label.grid(row=10, column=0, columnspan=3)
+    all_records = ""
+    for rec in records:
+        all_records += str(rec[0]) + " " + str(rec[1]) + " " + str(rec[6]) + "\n"
 
+    show_label = Label(root, text=all_records)
+    show_label.grid(row=12, column=0, columnspan=3)
+
+    # Commit changes
+    conn.commit()
+    # Close Connection
+    conn.close()
+
+# Delete record
+def delete():
+    conn = sqlite3.connect("address_book.db")
+    # Create Cursor
+    c = conn.cursor()
+
+    # Delete a record
+    c.execute(" DELETE from addresses WHERE oid=" + delete_box.get())
+    
     # Commit changes
     conn.commit()
     # Close Connection
@@ -77,7 +94,7 @@ def query():
 
 # Take input
 f_name = Entry(root, width=30)
-f_name.grid(row=0, column=1, padx=20)
+f_name.grid(row=0, column=1, padx=20, pady=(10,0))
 
 l_name = Entry(root, width=30)
 l_name.grid(row=1, column=1)
@@ -92,12 +109,17 @@ state = Entry(root, width=30)
 state.grid(row=4, column=1)
 
 zipcode = Entry(root, width=30)
-zipcode.grid(row=5,column=1)
+zipcode.grid(row=5, column=1)
+
+
+# Box for deleting
+delete_box = Entry(root, width=30)
+delete_box.grid(row=9, column=1)
 
 
 # Create text box labels
 f_name_label = Label(root, text="First Name: ")
-f_name_label.grid(row=0, column=0)
+f_name_label.grid(row=0, column=0, pady=(10,0))
 
 l_name_label = Label(root, text="Last Name: ")
 l_name_label.grid(row=1, column=0)
@@ -114,6 +136,9 @@ state_label.grid(row=4, column=0)
 zipcode_label = Label(root, text="Zipcode: ")
 zipcode_label.grid(row=5, column=0)
 
+delete_box_label = Label(root, text="Delete ID: # ")
+delete_box_label.grid(row=9, column=0)
+
 # Create Submit Button
 submit_btn = Button(root, text="Add Record to Database", command=submit)
 submit_btn.grid(row=6, column=0, columnspan=2, padx=10, ipadx=100)
@@ -122,4 +147,7 @@ submit_btn.grid(row=6, column=0, columnspan=2, padx=10, ipadx=100)
 query_btn = Button(root, text="Show Record from Database", command=query)
 query_btn.grid(row=7, column=0, columnspan=2, padx=10, pady=10, ipadx=137)
 
+# Create a delete button
+delete_btn = Button(root, text="Delete from Database", command=delete)
+delete_btn.grid(row=10, column=0, columnspan=2, padx=10, pady=10, ipadx=137)
 mainloop();
