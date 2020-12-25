@@ -103,7 +103,7 @@ def searchCustomers():
     search_customers = Tk()
     search_customers.title("List of Customers Found")
     search_customers.iconbitmap("./images/quality.ico")
-    search_customers.geometry("800x800")
+    search_customers.geometry("1300x800")
 
     def searchNow():
         selected = drop.get()
@@ -132,9 +132,20 @@ def searchCustomers():
 
         if not result:
             result = "Record not Found..."
-
-        searched_label = Label(search_customers, text=result)
-        searched_label.grid(row=4,column=0, padx=10, columnspan=2) 
+            lookup_label = Label(search_customers, text=result)
+            lookup_label.grid(row=3, column=0)
+        else:
+            for index, x in enumerate(result):
+                num = 0
+                index+=2
+                for y in x:
+                    lookup_label = Label(search_customers, text=y)
+                    lookup_label.grid(row=index, column=num)
+                    num += 1
+            csv_button = Button(search_customers, text="Save to excel", command=lambda: writeToCSV(result))
+            csv_button.grid(row=index + 1, column=0)
+        # searched_label = Label(search_customers, text=result)
+        # searched_label.grid(row=4,column=0, padx=10, columnspan=2) 
 
     search_box = Entry(search_customers)
     search_box.grid(row=0, column=1, padx=10, pady=10)
