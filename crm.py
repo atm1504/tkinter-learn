@@ -2,7 +2,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 import mysql.connector
 import csv
-
+from tkinter import ttk
 
 root = Tk()
 root.title("Learning Tkinter")
@@ -106,24 +106,47 @@ def searchCustomers():
     search_customers.geometry("800x800")
 
     def searchNow():
+        selected = drop.get()
+        sql=""
+        if selected == "Search by...":
+            test = Label(search_customers, text="Hey! You forgot to pick a dropdown selection..")
+            test.grid(row=2, column=0)
+        elif selected == "Last Name":
+            sql = "SELECT * FROM customers WHERE last_name=%s"
+            # test = Label(search_customers, text="You picked Last Name..")
+            # test.grid(row=2, column=0)
+        elif selected == "Email Address":
+            sql = "SELECT * FROM customers WHERE email=%s"
+            # test = Label(search_customers, text="You picked Email Addresses...")
+            # test.grid(row=2, column=0)
+        elif selected == "Customer ID":
+            sql = "SELECT * FROM customers WHERE user_id=%s"
+            # test = Label(search_customers, text="You picked Customer ID...")
+            # test.grid(row=2, column=0)
+
         searched = search_box.get()
-        sql = "SELECT * FROM customers WHERE last_name=%s"
+        # sql = "SELECT * FROM customers WHERE last_name=%s"
         name = (searched,)
         result = my_cursor.execute(sql, name)
         result = my_cursor.fetchall()
+
         if not result:
             result = "Record not Found..."
 
         searched_label = Label(search_customers, text=result)
-        searched_label.grid(row=2,column=0, padx=10, columnspan=2) 
+        searched_label.grid(row=4,column=0, padx=10, columnspan=2) 
 
     search_box = Entry(search_customers)
     search_box.grid(row=0, column=1, padx=10, pady=10)
-    search_box_label = Label(search_customers, text="Search Customers by Last Name")
+    search_box_label = Label(search_customers, text="Search Customers: ")
     search_box_label.grid(row=0, column=0, padx=10, pady=10)
 
-    search_button = Button(search_customers, text="Search Customers", command=searchNow)
-    search_button.grid(row=1, column=0, padx=10,  sticky=W)
+    search_button = Button(search_customers, text="Search Customers", command=searchNow, padx=5, pady=5)
+    search_button.grid(row=1, column=0, padx=10, sticky=W)
+
+    drop = ttk.Combobox(search_customers, value=["Search by...", "Last Name", "Email Address", "Customer ID"])
+    drop.current(0)
+    drop.grid(row=0, column=2)
 
 # Create label boxes
 #----------------------------------------------------------------
