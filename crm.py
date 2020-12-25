@@ -38,6 +38,8 @@ my_cursor = mydb.cursor()
 #     payment_method VARCHAR(50), \
 #     discount_code VARCHAR(255))")
 
+# my_cursor.execute("ALTER TABLE customers ADD(username VARCHAR(100))")
+
 ## Shows all the column headers of the table
 # my_cursor.execute("SELECT * FROM customers")
 
@@ -64,8 +66,8 @@ def clearFields():
 
 # Submit Customer Database
 def addCustomer():
-    sql_commands = "INSERT INTO customers (first_name, last_name, zipcode,  price_paid, email, address_1, address_2, city, state, country, phone, payment_method, discount_code) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)";
-    values = (first_name_box.get(), last_name_box.get(), zipcode_box.get(), price_paid_box.get(), email_box.get(), address1_box.get(), address2_box.get(), city_box.get(), state_box.get(), country_box.get(), phone_box.get(), payment_method_box.get(), discount_code_box.get())
+    sql_commands = "INSERT INTO customers (first_name, last_name, zipcode,  price_paid, email, address_1, address_2, city, state, country, phone, payment_method, discount_code,username) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)";
+    values = (first_name_box.get(), last_name_box.get(), zipcode_box.get(), price_paid_box.get(), email_box.get(), address1_box.get(), address2_box.get(), city_box.get(), state_box.get(), country_box.get(), phone_box.get(), payment_method_box.get(), discount_code_box.get(), username_box.get())
     my_cursor.execute(sql_commands, values)
 
     mydb.commit()
@@ -105,7 +107,40 @@ def searchCustomers():
     search_customers.iconbitmap("./images/quality.ico")
     search_customers.geometry("1300x800")
 
+    def update():
+        sql_command = """ UPDATE customers SET first_name=%s, last_name=%s, address_1 = %s ,  address_2=%s, city=%s, state=%s, zipcode=%s, country=%s,  phone=%s, email=%s, username=%s, payment_method=%s, discount_code=%s WHERE user_id=%s"""
+
+        first_name = first_name_box2.get()
+        last_name = last_name_box2.get()
+        address1 = address1_box2.get()
+        address2 = address2_box2.get()
+        city = city_box2.get()
+        state = state_box2.get()
+        zipcode = zipcode_box2.get()
+        country = country_box2.get()
+        phone = phone_box2.get()
+        email = email_box2.get()
+        username = username_box2.get()
+        payment_method = payment_method_box2.get()
+        discount_code = discount_code_box2.get()
+        id_value = id_box2.get()
+
+        inputs = (first_name, last_name, address1, address2, city, state, zipcode, country, phone, email, username, payment_method, discount_code, id_value)
+
+        my_cursor.execute(sql_command, inputs)
+        mydb.commit()
+
+        search_customers.destroy()
+
+
     def editNow(id, index):
+
+        sql2 = "SELECT * FROM customers WHERE user_id = %s"
+        name2 = (id,)
+        result2 = my_cursor.execute(sql2, name2)
+        result2 = my_cursor.fetchall()
+        print(result2)
+
         first_name_label = Label(search_customers, text="First Name").grid(row=index + 1, column=0, sticky=W, padx=10)
         last_name_label = Label(search_customers, text="Last Name").grid(row=index + 2, column=0, sticky=W, padx=10)
         address1_label = Label(search_customers, text="Address 1 Box").grid(row=index + 3, column=0, sticky=W, padx=10)
@@ -124,53 +159,84 @@ def searchCustomers():
 
         # Create input text boxes
         #----------------------------------------------------------------
+        global first_name_box2
         first_name_box2 = Entry(search_customers)
         first_name_box2.grid(row=index + 1, column=1, pady=10)
+        first_name_box2.insert(0, result2[0][0])
 
+        global last_name_box2
         last_name_box2 = Entry(search_customers)
         last_name_box2.grid(row=index + 2, column=1, pady=5)
+        last_name_box2.insert(0, result2[0][1])
 
+        global address1_box2
         address1_box2 = Entry(search_customers)
         address1_box2.grid(row=index + 3, column=1, pady=5)
+        address1_box2.insert(0, result2[0][2])
 
+        global address2_box2
         address2_box2 = Entry(search_customers)
         address2_box2.grid(row=index + 4, column=1, pady=5)
+        address2_box2.insert(0, result2[0][3])
 
+        global city_box2
         city_box2 = Entry(search_customers)
         city_box2.grid(row=index + 5, column=1, pady=5)
+        city_box2.insert(0, result2[0][4])
 
+        global state_box2
         state_box2 = Entry(search_customers)
         state_box2.grid(row=index + 6, column=1, pady=5)
+        state_box2.insert(0, result2[0][5])
 
+        global zipcode_box2
         zipcode_box2 = Entry(search_customers)
         zipcode_box2.grid(row=index + 7, column=1, pady=5)
+        zipcode_box2.insert(0, result2[0][2])
 
+        global country_box2
         country_box2 = Entry(search_customers)
         country_box2.grid(row=index + 8, column=1, pady=5)
+        country_box2.insert(0, result2[0][10])
 
+        global phone_box2
         phone_box2 = Entry(search_customers)
         phone_box2.grid(row=index + 9, column=1, pady=5)
+        phone_box2.insert(0, result2[0][11])
 
+        global email_box2
         email_box2 = Entry(search_customers)
         email_box2.grid(row=index + 10, column=1, pady=5)
+        email_box2.insert(0, result2[0][5])
 
+        global username_box2
         username_box2 = Entry(search_customers)
         username_box2.grid(row=index + 11, column=1, pady=5)
+        username_box2.insert(0, result2[0][10])
 
+        global payment_method_box2
         payment_method_box2 = Entry(search_customers)
         payment_method_box2.grid(row=index + 12, column=1, pady=5)
+        payment_method_box2.insert(0, result2[0][12])
 
+        global discount_code_box2
         discount_code_box2 = Entry(search_customers)
         discount_code_box2.grid(row=index + 13, column=1, pady=5)
+        discount_code_box2.insert(0, result2[0][13])
 
+        global price_paid_box2
         price_paid_box2 = Entry(search_customers)
         price_paid_box2.grid(row=index + 14, column=1, pady=5)
+        price_paid_box2.insert(0, result2[0][3])
 
+        global id_box2
         id_box2 = Entry(search_customers)
         id_box2.grid(row=index + 15, column=1, pady=5)
+        id_box2.insert(0, id)
 
-        save_record = Button(search_customers, text="Update Record")
-        save_record.grid(row=index+15,column=0,padx=10,pady=10)
+        global save_record
+        save_record = Button(search_customers, text="Update Record", command=update)
+        save_record.grid(row=index + 16, column=0, padx=10, pady=10)
 
 
     def searchNow():
