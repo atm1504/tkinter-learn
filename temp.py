@@ -8,4 +8,4 @@ root.iconbitmap("./images/quality.ico")
 root.geometry("400x400")
 
 
-mainloop();
+root.mainloop();
