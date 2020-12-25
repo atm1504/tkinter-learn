@@ -70,6 +70,23 @@ def addCustomer():
     mydb.commit()
     clearFields()
 
+# List customers
+def listCustomers():
+    list_customer_query = Tk()
+    list_customer_query.title("List All Customers")
+    list_customer_query.iconbitmap("./images/quality.ico")
+    list_customer_query.geometry("800x800")
+
+    my_cursor.execute("SELECT * from customers");
+    result = my_cursor.fetchall()
+
+    for index, x in enumerate(result):
+        num = 0
+        for y in x:
+            lookup_label = Label(list_customer_query, text=y)
+            lookup_label.grid(row=index, column=num)
+            num += 1
+
 # Create label boxes
 #----------------------------------------------------------------
 title_label = Label(root, text="Customer Database", font=("Helvetica", 16))
@@ -142,9 +159,8 @@ add_customer_button.grid(row=15, column=0, padx=10, pady=10)
 clear_fields_button = Button(root, text="Clear Fields", command=clearFields)
 clear_fields_button.grid(row=15, column=1, padx=10, pady=10)
 
+list_customers_btn = Button(root, text="List Customers", command=listCustomers)
+list_customers_btn.grid(row=16, column=0, padx=10, pady=10, sticky=W)
 
-my_cursor.execute("SELECT * from customers");
-results= my_cursor.fetchall()
-print(results)
 
 mainloop();
