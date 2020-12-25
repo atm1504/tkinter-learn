@@ -16,3 +16,7 @@ myButton.pack()
 
 
 root.mainloop()
+
+
+## Command to create exe file
+## pyinstaller --onefile --icon=/images/quality.ico buttons.py
