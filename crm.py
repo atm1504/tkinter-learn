@@ -13,6 +13,7 @@ mydb = mysql.connector.connect(
     user="root",
     passwd="11312113",
     database="codemy"
+
 )
 
 # Create a cursor and initialize it
@@ -62,7 +63,12 @@ def clearFields():
 
 # Submit Customer Database
 def addCustomer():
-    return
+    sql_commands = "INSERT INTO customers (first_name, last_name, zipcode,  price_paid, email, address_1, address_2, city, state, country, phone, payment_method, discount_code) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)";
+    values = (first_name_box.get(), last_name_box.get(), zipcode_box.get(), price_paid_box.get(), email_box.get(), address1_box.get(), address2_box.get(), city_box.get(), state_box.get(), country_box.get(), phone_box.get(), payment_method_box.get(), discount_code_box.get())
+    my_cursor.execute(sql_commands, values)
+
+    mydb.commit()
+    clearFields()
 
 # Create label boxes
 #----------------------------------------------------------------
@@ -136,5 +142,9 @@ add_customer_button.grid(row=15, column=0, padx=10, pady=10)
 clear_fields_button = Button(root, text="Clear Fields", command=clearFields)
 clear_fields_button.grid(row=15, column=1, padx=10, pady=10)
 
+
+my_cursor.execute("SELECT * from customers");
+results= my_cursor.fetchall()
+print(results)
 
 mainloop();
