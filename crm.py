@@ -105,6 +105,74 @@ def searchCustomers():
     search_customers.iconbitmap("./images/quality.ico")
     search_customers.geometry("1300x800")
 
+    def editNow(id, index):
+        first_name_label = Label(search_customers, text="First Name").grid(row=index + 1, column=0, sticky=W, padx=10)
+        last_name_label = Label(search_customers, text="Last Name").grid(row=index + 2, column=0, sticky=W, padx=10)
+        address1_label = Label(search_customers, text="Address 1 Box").grid(row=index + 3, column=0, sticky=W, padx=10)
+        address2_label = Label(search_customers, text="Address 2 Box").grid(row=index + 4, column=0, sticky=W, padx=10)
+        city_label = Label(search_customers, text="City").grid(row=index + 5, column=0, sticky=W, padx=10)
+        state_label = Label(search_customers, text="State").grid(row=index + 6, column=0, sticky=W, padx=10)
+        zipcode_label = Label(search_customers, text="Zipcode").grid(row=index + 7, column=0, sticky=W, padx=10)
+        country_label = Label(search_customers, text="Country").grid(row=index + 8, column=0, sticky=W, padx=10)
+        phone_label = Label(search_customers, text="Phone").grid(row=index + 9, column=0, sticky=W, padx=10)
+        email_label = Label(search_customers, text="Email").grid(row=index + 10, column=0, sticky=W, padx=10)
+        username_label = Label(search_customers, text="Username").grid(row=index + 11, column=0, sticky=W, padx=10)
+        payment_method_label = Label(search_customers, text="Payment Method").grid(row=index + 12, column=0, sticky=W, padx=10)
+        discount_code_label = Label(search_customers, text="Discount Code").grid(row=index + 13, column=0, sticky=W, padx=10)
+        price_paid_label = Label(search_customers, text="Price Paid").grid(row=index + 14, column=0, sticky=W, padx=10)
+        id_label = Label(search_customers, text="User Id").grid(row=index + 15, column=0, sticky=W, padx=10)
+
+        # Create input text boxes
+        #----------------------------------------------------------------
+        first_name_box2 = Entry(search_customers)
+        first_name_box2.grid(row=index + 1, column=1, pady=10)
+
+        last_name_box2 = Entry(search_customers)
+        last_name_box2.grid(row=index + 2, column=1, pady=5)
+
+        address1_box2 = Entry(search_customers)
+        address1_box2.grid(row=index + 3, column=1, pady=5)
+
+        address2_box2 = Entry(search_customers)
+        address2_box2.grid(row=index + 4, column=1, pady=5)
+
+        city_box2 = Entry(search_customers)
+        city_box2.grid(row=index + 5, column=1, pady=5)
+
+        state_box2 = Entry(search_customers)
+        state_box2.grid(row=index + 6, column=1, pady=5)
+
+        zipcode_box2 = Entry(search_customers)
+        zipcode_box2.grid(row=index + 7, column=1, pady=5)
+
+        country_box2 = Entry(search_customers)
+        country_box2.grid(row=index + 8, column=1, pady=5)
+
+        phone_box2 = Entry(search_customers)
+        phone_box2.grid(row=index + 9, column=1, pady=5)
+
+        email_box2 = Entry(search_customers)
+        email_box2.grid(row=index + 10, column=1, pady=5)
+
+        username_box2 = Entry(search_customers)
+        username_box2.grid(row=index + 11, column=1, pady=5)
+
+        payment_method_box2 = Entry(search_customers)
+        payment_method_box2.grid(row=index + 12, column=1, pady=5)
+
+        discount_code_box2 = Entry(search_customers)
+        discount_code_box2.grid(row=index + 13, column=1, pady=5)
+
+        price_paid_box2 = Entry(search_customers)
+        price_paid_box2.grid(row=index + 14, column=1, pady=5)
+
+        id_box2 = Entry(search_customers)
+        id_box2.grid(row=index + 15, column=1, pady=5)
+
+        save_record = Button(search_customers, text="Update Record")
+        save_record.grid(row=index+15,column=0,padx=10,pady=10)
+
+
     def searchNow():
         selected = drop.get()
         sql=""
@@ -137,10 +205,13 @@ def searchCustomers():
         else:
             for index, x in enumerate(result):
                 num = 0
-                index+=2
+                index += 2
+                id_reference = str(x[4])
+                edit_button = Button(search_customers, text="Edit " + id_reference, command=lambda: editNow(id_reference,index))
+                edit_button.grid(row=index,column=num)
                 for y in x:
                     lookup_label = Label(search_customers, text=y)
-                    lookup_label.grid(row=index, column=num)
+                    lookup_label.grid(row=index, column=num+1)
                     num += 1
             csv_button = Button(search_customers, text="Save to excel", command=lambda: writeToCSV(result))
             csv_button.grid(row=index + 1, column=0)
@@ -234,7 +305,7 @@ clear_fields_button.grid(row=15, column=1, padx=10, pady=10)
 list_customers_btn = Button(root, text="List Customers", command=listCustomers)
 list_customers_btn.grid(row=16, column=0, padx=10, pady=10, sticky=W)
 
-search_customers_btn = Button(root, text="Search Customers", command=searchCustomers)
+search_customers_btn = Button(root, text="Search/Edit Customers", command=searchCustomers)
 search_customers_btn.grid(row=16, column=1, padx=10, pady=10, sticky=W)
 
 mainloop();
