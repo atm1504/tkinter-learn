@@ -33,6 +33,21 @@ def stop():
     pygame.mixer.music.stop(song)
     songBox.selection_clear(loops=0)
 
+# Create Global Pause Variable
+global paused
+paused = False
+
+
+def pause(is_paused):
+    global paused
+    paused = is_paused
+    if paused:
+        pygame.mixer.music.unpause()
+        paused = False
+    else:
+        pygame.mixer.music.pause()
+        paused = True
+    
 songBox = Listbox(root, bg="black", fg="green", width=60, selectbackground ="gray", selectforeground="black")
 songBox.pack(pady=20)
 
@@ -51,7 +66,7 @@ controlFrame.pack()
 back_button = Button(controlFrame, image=back_btn_img, borderwidth=0)
 forward_button = Button(controlFrame, image=forward_btn_img, borderwidth=0)
 play_button = Button(controlFrame, image=play_btn_img, borderwidth=0, command=play)
-pause_button = Button(controlFrame, image=pause_btn_img, borderwidth=0)
+pause_button = Button(controlFrame, image=pause_btn_img, borderwidth=0, command=lambda:pause(paused))
 stop_button = Button(controlFrame, image=stop_btn_img, borderwidth=0, command=stop)
 
 back_button.grid(row=0,column=0, padx=10)
