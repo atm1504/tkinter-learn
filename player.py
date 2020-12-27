@@ -20,6 +20,14 @@ def addSong():
     song = song.replace(".mp3", "")
     songBox.insert(END, song)
 
+# Add many songs at a time
+def addManySongs():
+    songs = filedialog.askopenfilenames(initialdir='audio/', title="Choose A Song", filetypes=(("mp3 Files", "*.mp3"),))
+    for song in songs:
+        song = song.replace("/Users/amartyamondal/Documents/project/tkinter/audio/", "")
+        song = song.replace(".mp3", "")
+        songBox.insert(END, song)
+
 # Play selected song
 def play():
     song = songBox.get(ACTIVE)
@@ -30,7 +38,7 @@ def play():
 
 # Stop curentn playing music
 def stop():
-    pygame.mixer.music.stop(song)
+    pygame.mixer.music.stop()
     songBox.selection_clear(loops=0)
 
 # Create Global Pause Variable
@@ -84,6 +92,6 @@ root.config(menu=myMenu)
 addSongMenu = Menu(myMenu)
 myMenu.add_cascade(label="Add songs", menu=addSongMenu)
 addSongMenu.add_command(label="Add One Song to Playlist", command=addSong)
-
+addSongMenu.add_command(label="Add Many Song to Playlist", command=addManySongs)
 
 root.mainloop();
