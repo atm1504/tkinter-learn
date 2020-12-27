@@ -2,15 +2,32 @@ from tkinter import *
 from PIL import ImageTk, Image
 import pygame
 from tkinter import filedialog
-
+import time
+from mutagen.mp3 import MP3
 
 root = Tk()
 root.title("Learning Tkinter")
 root.iconbitmap("./images/quality.ico")
-root.geometry("400x400")
+root.geometry("500x350")
 
 # Initialize Pygame Mixer
 pygame.mixer.init()
+
+## Grab song length time
+def playTime():
+    currentTime = pygame.mixer.music.get_pos() / 1000
+    convertedCurrentTime = time.strftime('%H:%M:%S', time.gmtime(currentTime))
+
+    # Get curent p laying song
+    # current_one = songBox.curselection()
+    song = songBox.get(ACTIVE)
+    song = f'/Users/amartyamondal/Documents/project/tkinter/audio/{song}.mp3'
+    song_mut = MP3(song)
+    song_length=song_mut.info.length
+    convertedSongLength = time.strftime('%H:%M:%S', time.gmtime(song_length))
+
+    statusBar.config(text=f'Time Elapsed {convertedCurrentTime} of {convertedSongLength}')
+    statusBar.after(1000,playTime)
 
 # Add Song Function
 def addSong():
@@ -35,11 +52,13 @@ def play():
     
     pygame.mixer.music.load(song)
     pygame.mixer.music.play(loops=0)
+    playTime()
 
 # Stop curentn playing music
 def stop():
     pygame.mixer.music.stop()
     songBox.selection_clear(loops=0)
+    statusBar.config(text="")
 
 # Create Global Pause Variable
 global paused
@@ -135,5 +154,13 @@ remove_song_menu = Menu(myMenu)
 myMenu.add_cascade(label="Remove Songs", menu=remove_song_menu)
 remove_song_menu.add_command(label="Delete A Song From Playlist", command=delete_song)
 remove_song_menu.add_command(label="Delete All Songs From Playlist", command=delete_all_songs)
+
+# Create status bar
+statusBar = Label(root, text='', bd=1, relief=GROOVE, anchor=E)
+statusBar.pack(fill=X, side=BOTTOM, ipady=2)
+
+
+
+
 
 root.mainloop();
