@@ -18,6 +18,9 @@ pygame.mixer.init()
 ## Grab song length time
 def playTime():
     currentTime = pygame.mixer.music.get_pos() / 1000
+
+    slider_label.config(text=f'Slider: {int(mySlider.get())} and Song Pos: {int(currentTime)}')
+
     convertedCurrentTime = time.strftime('%H:%M:%S', time.gmtime(currentTime))
 
     # Get curent p laying song
@@ -30,8 +33,30 @@ def playTime():
     song_length=song_mut.info.length
     convertedSongLength = time.strftime('%H:%M:%S', time.gmtime(song_length))
 
-    statusBar.config(text=f'Time Elapsed {convertedCurrentTime} of {convertedSongLength}')
-    mySlider.config(value=int(currentTime))
+    currentTime += 1
+
+    if (int(mySlider.get())) == int(song_length):
+        statusBar.config(text=f'Time Elapsed {convertedSongLength} of {convertedSongLength}')
+
+    elif (int(mySlider.get())) == int(currentTime):
+            # Slider has not been moved
+        slider_position = int(song_length)
+        mySlider.config(to=slider_position, value=int(currentTime))
+    else:
+        # Slider has been moved
+        slider_position = int(song_length)
+        mySlider.config(to=slider_position, value=int(mySlider.get()))
+        convertedCurrentTime = time.strftime('%H:%M:%S', time.gmtime(int(mySlider.get())))
+        print(convertedCurrentTime)
+        statusBar.config(text=f'Time Elapsed {convertedCurrentTime} of {convertedSongLength}')
+
+        # Move this thing alone by one second
+        next_time = int(mySlider.get()) + 1
+        mySlider.config(value=next_time)
+
+
+    # statusBar.config(text=f'Time Elapsed {convertedCurrentTime} of {convertedSongLength}')
+    # mySlider.config(value=int(currentTime))
 
     statusBar.after(1000,playTime)
 
@@ -60,8 +85,8 @@ def play():
     pygame.mixer.music.play(loops=0)
     playTime()
 
-    slider_position = int(song_length)
-    mySlider.config(to=slider_position, value=0)
+    # slider_position = int(song_length)
+    # mySlider.config(to=slider_position, value=0)
 
 # Stop curentn playing music
 def stop():
@@ -122,7 +147,13 @@ def delete_all_songs():
 
 ## Slider function
 def slide(x):
-    slider_label.config(text=f'{int(mySlider.get())} of {int(song_length)}')
+    # slider_label.config(text=f'{int(mySlider.get())} of {int(song_length)}')
+    song = songBox.get(ACTIVE)
+    song = f'/Users/amartyamondal/Documents/project/tkinter/audio/{song}.mp3'
+    
+    pygame.mixer.music.load(song)
+    pygame.mixer.music.play(loops=0, start=int(mySlider.get()))
+
 
 songBox = Listbox(root, bg="black", fg="green", width=60, selectbackground ="gray", selectforeground="black")
 songBox.pack(pady=20)
