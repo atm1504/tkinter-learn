@@ -4,11 +4,13 @@ import pygame
 from tkinter import filedialog
 import time
 from mutagen.mp3 import MP3
+import tkinter.ttk as ttk
+
 
 root = Tk()
 root.title("Learning Tkinter")
 root.iconbitmap("./images/quality.ico")
-root.geometry("500x350")
+root.geometry("500x450")
 
 # Initialize Pygame Mixer
 pygame.mixer.init()
@@ -23,10 +25,14 @@ def playTime():
     song = songBox.get(ACTIVE)
     song = f'/Users/amartyamondal/Documents/project/tkinter/audio/{song}.mp3'
     song_mut = MP3(song)
+
+    global song_length
     song_length=song_mut.info.length
     convertedSongLength = time.strftime('%H:%M:%S', time.gmtime(song_length))
 
     statusBar.config(text=f'Time Elapsed {convertedCurrentTime} of {convertedSongLength}')
+    mySlider.config(value=int(currentTime))
+
     statusBar.after(1000,playTime)
 
 # Add Song Function
@@ -54,10 +60,13 @@ def play():
     pygame.mixer.music.play(loops=0)
     playTime()
 
+    slider_position = int(song_length)
+    mySlider.config(to=slider_position, value=0)
+
 # Stop curentn playing music
 def stop():
     pygame.mixer.music.stop()
-    songBox.selection_clear(loops=0)
+    songBox.selection_clear(ACTIVE)
     statusBar.config(text="")
 
 # Create Global Pause Variable
@@ -111,6 +120,10 @@ def delete_all_songs():
 	songBox.delete(0, END)
 	pygame.mixer.music.stop()
 
+## Slider function
+def slide(x):
+    slider_label.config(text=f'{int(mySlider.get())} of {int(song_length)}')
+
 songBox = Listbox(root, bg="black", fg="green", width=60, selectbackground ="gray", selectforeground="black")
 songBox.pack(pady=20)
 
@@ -160,6 +173,12 @@ statusBar = Label(root, text='', bd=1, relief=GROOVE, anchor=E)
 statusBar.pack(fill=X, side=BOTTOM, ipady=2)
 
 
+mySlider = ttk.Scale(root, from_=0, to=100, orient=HORIZONTAL, value=0 , command=slide, length=360)
+mySlider.pack(pady=30)
+
+## Temporary slider Labell
+slider_label = Label(root, text="0")
+slider_label.pack(pady=10)
 
 
 
