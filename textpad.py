@@ -167,6 +167,14 @@ def all_text_color():
 def print_file():
     pass
 
+# Select all
+def select_all(e):
+    my_text.tag_add('sel', '1.0', 'end')
+
+#Clear All
+def clear_all():
+    my_text.delete(1.0, END)
+
 #--------------------------------------------------------------------------------------------------------------
 # Create a toolbar frame
 toolbar_frame = Frame(root)
@@ -218,6 +226,8 @@ edit_menu.add_separator()
 edit_menu.add_command(label="Undo", accelerator="cmd+z", command = my_text.edit_undo)
 edit_menu.add_command(label="Redo", accelerator="cmd+y", command = my_text.edit_redo)
 edit_menu.add_separator()
+edit_menu.add_command(label="Select All", accelerator="cmd+a", command = lambda : select_all(False))
+edit_menu.add_command(label="Clear", command=clear_all)
 
 # Add Color menu
 color_menu = Menu(my_menu)
@@ -255,4 +265,7 @@ root.bind("<Control-Key-x>", cut_text)
 root.bind("<Control-Key-c>", copy_text)
 root.bind("<Control-Key-v>", paste_text)
 
+# Select Binding
+root.bind('<Control-A>', select_all)
+root.bind('<Control-a>', select_all)
 root.mainloop();
