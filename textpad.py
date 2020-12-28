@@ -142,11 +142,12 @@ file_menu.add_command(label="Exit", command= root.quit)
 # Add Edit menu
 edit_menu = Menu(my_menu)
 my_menu.add_cascade(label="Edit", menu=edit_menu)
-edit_menu.add_command(label="Cut    (command+x)", command=lambda:cut_text(False) )
-edit_menu.add_command(label="Copy   (command+c)", command=lambda: copy_text(False))
-edit_menu.add_command(label="Paste  (command+v)", command=lambda: paste_text(False))
-edit_menu.add_command(label="Undo")
-edit_menu.add_command(label="Redo")
+edit_menu.add_command(label="Cut         ",accelerator="cmd+x", command=lambda: cut_text(False))
+edit_menu.add_command(label="Copy        ", accelerator="cmd+c",command=lambda: copy_text(False))
+edit_menu.add_command(label="Paste       ", accelerator="cmd+v", command=lambda: paste_text(False))
+edit_menu.add_separator()
+edit_menu.add_command(label="Und         ", accelerator="cmd+z", command = my_text.edit_undo)
+edit_menu.add_command(label="Redo        ", accelerator="cmd+y", command = my_text.edit_redo)
 edit_menu.add_separator()
 
 # Add Status Bar
