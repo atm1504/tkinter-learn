@@ -3,6 +3,7 @@ from PIL import ImageTk, Image
 from tkinter import filedialog
 from tkinter import font
 from tkinter import colorchooser
+import os, sys
 
 root = Tk()
 root.title("Learning Tkinter")
@@ -161,6 +162,11 @@ def all_text_color():
 	my_color = colorchooser.askcolor()[1]
 	if my_color:
 		my_text.config(fg=my_color)
+
+# Print file
+def print_file():
+    pass
+
 #--------------------------------------------------------------------------------------------------------------
 # Create a toolbar frame
 toolbar_frame = Frame(root)
@@ -197,6 +203,8 @@ file_menu.add_command(label="New", command=new_file)
 file_menu.add_command(label="Open", command=open_file)
 file_menu.add_command(label="Save", command=save_file)
 file_menu.add_command(label="Save As",command=save_as_file)
+file_menu.add_separator()
+file_menu.add_command(label="Print File",command=print_file)
 file_menu.add_separator()
 file_menu.add_command(label="Exit", command= root.quit)
 
