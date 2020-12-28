@@ -6,7 +6,7 @@ from tkinter import font
 root = Tk()
 root.title("Learning Tkinter")
 root.iconbitmap("./images/quality.ico")
-root.geometry("1200x660")
+root.geometry("1200x680")
 
 global open_status_name
 open_status_name = False
@@ -115,16 +115,22 @@ def paste_text(e):
 my_frame = Frame(root)
 my_frame.pack(pady=5)
 
-# Create our scrollbar
+# Create our vertical scrollbar
 text_scroll = Scrollbar(my_frame)
 text_scroll.pack(side=RIGHT, fill=Y)
 
+# Horizontal scroll bar
+hor_scroll = Scrollbar(my_frame, orient="horizontal")
+hor_scroll.pack(side=BOTTOM,fill=X)
+
 # Text box
-my_text = Text(my_frame, width=97, height=25, font=("Helvetica", 16), selectbackground="yellow", selectforeground="black", undo=True, yscrollcommand=text_scroll.set, wrap="none")
+my_text = Text(my_frame, width=97, height=25, font=("Helvetica", 16), selectbackground="yellow", selectforeground="black", undo=True, yscrollcommand=text_scroll.set, xscrollcommand=hor_scroll.set, wrap="none")
 my_text.pack(pady=5)
 
 # Configure our scroll bar
 text_scroll.config(command=my_text.yview)
+hor_scroll.config(command=my_text.xview)
+
 
 my_menu = Menu(root)
 root.config(menu=my_menu)
@@ -152,7 +158,7 @@ edit_menu.add_separator()
 
 # Add Status Bar
 status_bar = Label(root, text='Ready         ', anchor=E)
-status_bar.pack(fill=X, side=BOTTOM, ipady=5)
+status_bar.pack(fill=X, side=BOTTOM, ipady=15)
 
 
 # Edit Bindings
