@@ -1,6 +1,7 @@
 from tkinter import *
 from PIL import ImageTk, Image
 from tkinter import filedialog
+from tkinter import font
 
 
 root = Tk()
@@ -35,6 +36,35 @@ def add_image():
     my_text.image_create(position, image=my_image)
     myLabel.config(text=position)
 
+def select():
+    selected = my_text.selection_get()
+    myLabel.config(text=selected)
+
+def bolder():
+    bold_font = font.Font(my_text, my_text.cget("font"))
+    bold_font.configure(weight="bold")
+
+    my_text.tag_configure("bold", font=bold_font)
+    current_tags = my_text.tag_names("sel.first")
+
+    if "bold" in current_tags:
+        my_text.tag_remove("bold", "sel.first", "sel.last")
+    else:
+        my_text.tag_add("bold", "sel.first", "sel.last")
+
+
+def italics_it():
+    italics_font = font.Font(my_text, my_text.cget("font"))
+    italics_font.configure(slant="italic")
+
+    my_text.tag_configure("italic", font=italics_font)
+    current_tags = my_text.tag_names("sel.first")
+
+    if "italic" in current_tags:
+        my_text.tag_remove("italic", "sel.first", "sel.last")
+    else:
+        my_text.tag_add("italic", "sel.first", "sel.last")
+
 my_frame = Frame(root)
 my_frame.pack(pady=10)
 
@@ -56,6 +86,17 @@ save_button.pack(pady=20)
 
 image_button = Button(root, text="Add Image", command=add_image)
 image_button.pack(pady=10)
+
+select_button = Button(root, text="Select Text", command=select)
+select_button.pack(pady=5)
+
+bold_button = Button(root, text="Bold", command=bolder)
+bold_button.pack(pady=5)
+
+italics_button = Button(root, text="Italics", command=italics_it)
+italics_button.pack(pady=5)
+
+bold_button.pack(pady=5)
 
 myLabel = Label(root, text='')
 myLabel.pack(pady=5)
