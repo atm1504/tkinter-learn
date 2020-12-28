@@ -1,0 +1,3 @@
+Thi is sample 2 file!
+
+Seems it is working
