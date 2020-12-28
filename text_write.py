@@ -7,16 +7,18 @@ from tkinter import font
 root = Tk()
 root.title("Learning Tkinter")
 root.iconbitmap("./images/quality.ico")
-root.geometry("500x600")
+root.geometry("800x800")
 
 def open_txt():
     text_file = filedialog.askopenfilename(initialdir="", title="Open text File", filetypes=(("Text Files", "*.txt"),))
-
+    name = text_file
     text_file = open(text_file, "r")
     stuff = text_file.read()
 
     my_text.insert(END,stuff)
     text_file.close()
+
+    root.title(f'{name} - Textpad')
 
 # def save_txt():
 #     text_file = filedialog.askopenfilename(initialdir="", title="Open Text File", filetypes=(("Text Files", "*.txt"),))
@@ -72,7 +74,7 @@ my_frame.pack(pady=10)
 textScroll = Scrollbar(my_frame)
 textScroll.pack(side=RIGHT, fill=Y)
 
-my_text = Text(my_frame, width=40, height=10, font=("Helvetica", 16), selectbackground="yellow", selectforeground="black", yscrollcommand=textScroll.set)
+my_text = Text(my_frame, width=40, height=10, font=("Helvetica", 16), selectbackground="yellow", selectforeground="black", yscrollcommand=textScroll.set, undo=True)
 my_text.pack(pady=20)
 
 # Configure scrollbar
@@ -100,5 +102,11 @@ bold_button.pack(pady=5)
 
 myLabel = Label(root, text='')
 myLabel.pack(pady=5)
+
+redo_button = Button(root, text="Redo", command=my_text.edit_redo)
+redo_button.pack(pady=10)
+
+undo_button = Button(root, text="Undo", command=my_text.edit_undo)
+undo_button.pack(pady=10)
 
 root.mainloop();
