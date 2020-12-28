@@ -8,34 +8,43 @@ root.title("Learning Tkinter")
 root.iconbitmap("./images/quality.ico")
 root.geometry("1200x660")
 
+global open_status_name
+open_status_name = False
+
 #-----------------------------------------------------Functions-----------------------------------------------------------------
 #Create new file function
 def new_file():
     my_text.delete("1.0", END)
     root.title('New File - TextPad!')
     status_bar.config(text="New File      ")
-
+    global open_status_name
+    open_status_name = False
 
 #Create new file function
 def open_file():
     # Clear Editor
     my_text.delete("1.0", END)
+    global open_status_name
     # Grab File
     text_file = filedialog.askopenfilename(initialdir="", title="Open text File", filetypes=(("Text Files", "*.txt"), ("HTML Files", "*.html"), ("Python Files", "*.py"), ("All Files", "*.*"),))
-    name = text_file
-    status_bar.config(text=f'{name}           ')
-    root.title(f'{name} - TextPad!')
+    if text_file:
+        name = text_file
+        open_status_name = name
 
-    # Open the file
-    text_file = open(text_file, 'r')
-    stuff = text_file.read()
+        status_bar.config(text=f'{name}           ')
+        root.title(f'{name} - TextPad!')
 
-    # Add file data tot he text box
-    my_text.insert(END, stuff)
-    # Close  file
-    text_file.close()
+        # Open the file
+        text_file = open(text_file, 'r')
+        stuff = text_file.read()
+
+        # Add file data tot he text box
+        my_text.insert(END, stuff)
+        # Close  file
+        text_file.close()
 
 def save_as_file():
+    global open_status_name
     text_file = filedialog.asksaveasfilename(defaultextension=".*", initialdir="", title="Save File", filetypes=(("Text Files", "*.txt"), ("HTML Files", "*.html"), ("Python Files", "*.py"), ("All Files", "*.*")))
     if text_file:
         name = text_file
@@ -47,6 +56,19 @@ def save_as_file():
         text_file.write(my_text.get(1.0, END))
         # Close the file
         text_file.close()
+
+def save_file():
+    global open_status_name
+    if open_status_name:
+        # Save  the file
+        text_file = open(open_status_name, 'w')
+        text_file.write(my_text.get(1.0, END))
+        # Close the file
+        text_file.close()
+        root.title(f'{open_status_name} - TextPad!')
+        status_bar.config(text=f'Saved: {open_status_name}           ')
+    else:
+        save_as_file()
 
 
 #--------------------------------------------------------------------------------------------------------------
@@ -73,8 +95,8 @@ file_menu = Menu(my_menu, tearoff=False)
 my_menu.add_cascade(label="File", menu=file_menu)
 file_menu.add_command(label="New", command=new_file)
 file_menu.add_command(label="Open", command=open_file)
-file_menu.add_command(label="Save", command=save_as_file)
-file_menu.add_command(label="Save As")
+file_menu.add_command(label="Save", command=save_file)
+file_menu.add_command(label="Save As",command=save_as_file)
 file_menu.add_separator()
 file_menu.add_command(label="Exit", command= root.quit)
 
