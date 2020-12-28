@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 from tkinter import filedialog
 from tkinter import font
+from tkinter import colorchooser
 
 root = Tk()
 root.title("Learning Tkinter")
@@ -136,7 +137,30 @@ def italics_it():
 	else:
 		my_text.tag_add("italic", "sel.first", "sel.last")
 
+# Selected Text Color
+def text_color():
+    my_color = colorchooser.askcolor()[1]
 
+    if my_color:
+        color_font = font.Font(my_text, my_text.cget("font"))
+        my_text.tag_configure("colored", font=color_font, foreground=my_color)
+        current_tags = my_text.tag_names("sel.first")
+        if "colored" in current_tags:
+            my_text.tag_remove("colored", "sel.first", "sel.last")
+        else:
+            my_text.tag_add("colored", "sel.first", "sel.last")
+
+# Change background color
+def bg_color():
+	my_color = colorchooser.askcolor()[1]
+	if my_color:
+		my_text.config(bg=my_color)
+
+# Change ALL Text Color
+def all_text_color():
+	my_color = colorchooser.askcolor()[1]
+	if my_color:
+		my_text.config(fg=my_color)
 #--------------------------------------------------------------------------------------------------------------
 # Create a toolbar frame
 toolbar_frame = Frame(root)
@@ -179,13 +203,20 @@ file_menu.add_command(label="Exit", command= root.quit)
 # Add Edit menu
 edit_menu = Menu(my_menu)
 my_menu.add_cascade(label="Edit", menu=edit_menu)
-edit_menu.add_command(label="Cut         ",accelerator="cmd+x", command=lambda: cut_text(False))
-edit_menu.add_command(label="Copy        ", accelerator="cmd+c",command=lambda: copy_text(False))
-edit_menu.add_command(label="Paste       ", accelerator="cmd+v", command=lambda: paste_text(False))
+edit_menu.add_command(label="Cut",accelerator="cmd+x", command=lambda: cut_text(False))
+edit_menu.add_command(label="Copy", accelerator="cmd+c",command=lambda: copy_text(False))
+edit_menu.add_command(label="Paste ", accelerator="cmd+v", command=lambda: paste_text(False))
 edit_menu.add_separator()
-edit_menu.add_command(label="Und         ", accelerator="cmd+z", command = my_text.edit_undo)
-edit_menu.add_command(label="Redo        ", accelerator="cmd+y", command = my_text.edit_redo)
+edit_menu.add_command(label="Undo", accelerator="cmd+z", command = my_text.edit_undo)
+edit_menu.add_command(label="Redo", accelerator="cmd+y", command = my_text.edit_redo)
 edit_menu.add_separator()
+
+# Add Color menu
+color_menu = Menu(my_menu)
+my_menu.add_cascade(label="Color", menu=color_menu)
+color_menu.add_command(label="Change Selected", command=text_color)
+color_menu.add_command(label="All Text", command=all_text_color)
+color_menu.add_command(label="Background", command=bg_color)
 
 # Add Status Bar
 status_bar = Label(root, text='Ready         ', anchor=E)
@@ -206,6 +237,10 @@ undo_button.grid(row=0, column=2, padx=5, pady=5)
 # Redo Buttons
 redo_button = Button(toolbar_frame, text="Redo", command=my_text.edit_redo)
 redo_button.grid(row=0, column=3, padx=5, pady=5)
+
+# Text color button
+color_text_button = Button(toolbar_frame, text="Text Color", command=text_color)
+color_text_button.grid(row=0, column=4, padx=5, pady=5)
 
 # Edit Bindings
 root.bind("<Control-Key-x>", cut_text)
