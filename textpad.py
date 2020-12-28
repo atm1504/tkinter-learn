@@ -11,6 +11,9 @@ root.geometry("1200x660")
 global open_status_name
 open_status_name = False
 
+global selected
+selected = False
+
 #-----------------------------------------------------Functions-----------------------------------------------------------------
 #Create new file function
 def new_file():
@@ -70,6 +73,42 @@ def save_file():
     else:
         save_as_file()
 
+#Cut Text
+def cut_text(e):
+    global selected
+    # To see if from keyboard
+    if e:
+        selected = root.clipboard_get()
+    else:
+        if my_text.selection_get():
+            selected = my_text.selection_get()
+            my_text.delete("sel.first", "sel.last")
+
+#Copy Text
+def copy_text(e):
+    global selected
+    # To see if from keyboard
+    if e:
+        selected = root.clipboard_get()
+
+    if my_text.selection_get():
+        selected = my_text.selection_get()
+        # my_text.delete("sel.first", "sel.last")
+        root.clipboard_clear()
+        root.clipboard_append(selected)
+
+#Paste Text
+def paste_text(e):
+    global selected
+    # Check to see if keyboard shortcut cut
+    if e:
+        selected = root.clipboard_get()
+    else:
+        if selected:
+            position = my_text.index(INSERT)
+            my_text.insert(position, selected)
+        
+
 
 #--------------------------------------------------------------------------------------------------------------
 # Create Main Frame
@@ -103,9 +142,9 @@ file_menu.add_command(label="Exit", command= root.quit)
 # Add Edit menu
 edit_menu = Menu(my_menu)
 my_menu.add_cascade(label="Edit", menu=edit_menu)
-edit_menu.add_command(label="Cut")
-edit_menu.add_command(label="Copy")
-edit_menu.add_command(label="Paste")
+edit_menu.add_command(label="Cut    (command+x)", command=lambda:cut_text(False) )
+edit_menu.add_command(label="Copy   (command+c)", command=lambda: copy_text(False))
+edit_menu.add_command(label="Paste  (command+v)", command=lambda: paste_text(False))
 edit_menu.add_command(label="Undo")
 edit_menu.add_command(label="Redo")
 edit_menu.add_separator()
@@ -114,5 +153,10 @@ edit_menu.add_separator()
 status_bar = Label(root, text='Ready         ', anchor=E)
 status_bar.pack(fill=X, side=BOTTOM, ipady=5)
 
+
+# Edit Bindings
+root.bind("<Control-Key-x>", cut_text)
+root.bind("<Control-Key-c>", copy_text)
+root.bind("<Control-Key-v>", paste_text)
 
 root.mainloop();
