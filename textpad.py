@@ -107,10 +107,41 @@ def paste_text(e):
         if selected:
             position = my_text.index(INSERT)
             my_text.insert(position, selected)
-        
+
+# Bold it
+def bold_it():
+	bold_font = font.Font(my_text, my_text.cget("font"))
+	bold_font.configure(weight="bold")
+
+	my_text.tag_configure("bold", font=bold_font)
+
+	current_tags = my_text.tag_names("sel.first")
+
+	if "bold" in current_tags:
+		my_text.tag_remove("bold", "sel.first", "sel.last")
+	else:
+		my_text.tag_add("bold", "sel.first", "sel.last")
+
+# Italics it
+def italics_it():
+	italics_font = font.Font(my_text, my_text.cget("font"))
+	italics_font.configure(slant="italic")
+
+	my_text.tag_configure("italic", font=italics_font)
+
+	current_tags = my_text.tag_names("sel.first")
+
+	if "italic" in current_tags:
+		my_text.tag_remove("italic", "sel.first", "sel.last")
+	else:
+		my_text.tag_add("italic", "sel.first", "sel.last")
 
 
 #--------------------------------------------------------------------------------------------------------------
+# Create a toolbar frame
+toolbar_frame = Frame(root)
+toolbar_frame.pack(fill=X)
+
 # Create Main Frame
 my_frame = Frame(root)
 my_frame.pack(pady=5)
@@ -160,6 +191,21 @@ edit_menu.add_separator()
 status_bar = Label(root, text='Ready         ', anchor=E)
 status_bar.pack(fill=X, side=BOTTOM, ipady=15)
 
+# Create a Bold button
+bold_button = Button(toolbar_frame, text="Bold", command=bold_it)
+bold_button.grid(row=0, column=0, sticky=W, padx=5, pady=5)
+
+# Italics Button
+italics_button = Button(toolbar_frame, text="Italics", command=italics_it)
+italics_button.grid(row=0, column=1, padx=5, pady=5)
+
+# Undo Buttons
+undo_button = Button(toolbar_frame, text="Undo", command=my_text.edit_undo)
+undo_button.grid(row=0, column=2, padx=5, pady=5)
+
+# Redo Buttons
+redo_button = Button(toolbar_frame, text="Redo", command=my_text.edit_redo)
+redo_button.grid(row=0, column=3, padx=5, pady=5)
 
 # Edit Bindings
 root.bind("<Control-Key-x>", cut_text)
