@@ -35,9 +35,18 @@ def add_image():
     my_text.image_create(position, image=my_image)
     myLabel.config(text=position)
 
+my_frame = Frame(root)
+my_frame.pack(pady=10)
 
-my_text = Text(root, width=40, height=10, font=("Helvetica", 16), selectbackground="yellow", selectforeground="black")
+# Create Scrollbar
+textScroll = Scrollbar(my_frame)
+textScroll.pack(side=RIGHT, fill=Y)
+
+my_text = Text(my_frame, width=40, height=10, font=("Helvetica", 16), selectbackground="yellow", selectforeground="black", yscrollcommand=textScroll.set)
 my_text.pack(pady=20)
+
+# Configure scrollbar
+textScroll.config(command=my_text.yview)
 
 open_button = Button(root, text="Open text file", command=open_txt)
 open_button.pack(pady=20)
