@@ -188,6 +188,13 @@ def reset():
     b8.grid(row=2, column=1)
     b9.grid(row=2, column=2)
 
+my_menu = Menu(root)
+root.config(menu=my_menu)
+
+options_menu = Menu(my_menu, tearoff=False)
+my_menu.add_cascade(label="Options", menu=options_menu)
+options_menu.add_command(label="Reset Game", command=reset)
+
 reset()
 
 root.mainloop();
