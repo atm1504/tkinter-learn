@@ -19,7 +19,18 @@ style.configure("TreeView",
 style.map('Treeview',
 	background=[('selected', 'blue')])
 
-my_tree = ttk.Treeview(root)
+tree_frame = Frame(root)
+tree_frame.pack(pady=20)
+
+# Tree scrrollbar
+tree_scroll = Scrollbar(tree_frame)
+tree_scroll.pack(side=RIGHT, fill=Y)
+
+
+my_tree = ttk.Treeview(tree_frame,yscrollcommand=tree_scroll.set, selectmode="extended")
+my_tree.pack(pady=20)
+
+tree_scroll.config(command=my_tree.yview)
 
 # Define our columns
 my_tree['columns'] = ("Name", "ID", "Favorite Pizza")
@@ -88,8 +99,6 @@ for record in data:
     else:
         my_tree.insert(parent='', index=END, iid=count, text="Parent", values=(record[0], record[1], record[2]), tags=("oddrow",))
     count += 1
-
-my_tree.pack(pady=20)
 
 add_frame = Frame(root)
 add_frame.pack(pady=20)
