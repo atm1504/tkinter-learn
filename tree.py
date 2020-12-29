@@ -5,7 +5,19 @@ from tkinter import ttk
 root = Tk()
 root.title("Learning Tkinter")
 root.iconbitmap("./images/quality.ico")
-root.geometry("800x800")
+root.geometry("700x700")
+
+style = ttk.Style()
+style.theme_use("default")
+style.configure("TreeView",
+    background="#D3D3D3",
+    foreground="black",
+    rowheight=25,
+    fieldbackground="#D3D3D3"
+)
+# Change selected color
+style.map('Treeview',
+	background=[('selected', 'blue')])
 
 my_tree = ttk.Treeview(root)
 
