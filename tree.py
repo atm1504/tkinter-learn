@@ -5,7 +5,7 @@ from tkinter import ttk
 root = Tk()
 root.title("Learning Tkinter")
 root.iconbitmap("./images/quality.ico")
-root.geometry("700x700")
+root.geometry("700x800")
 
 style = ttk.Style()
 style.theme_use("default")
@@ -76,17 +76,6 @@ data = [
 	["Ruth", 9, "Vegan"]
 ]
 
-# data = [
-# 	["John", 1, "Pepperoni"],
-# 	["Mary", 2, "Cheese"],
-# 	["Tim", 3, "Mushroom"],
-# 	["Erin", 4, "Ham"],
-# 	["Bob", 5, "Onion"],
-# 	["Steve", 6, "Peppers"],
-# 	["Tina", 7, "Cheese"],
-# 	["Mark", 8, "Supreme"]
-# ]
-
 # Create striped row tags
 my_tree.tag_configure('oddrow', background="white")
 my_tree.tag_configure('evenrow', background="lightblue")
@@ -135,9 +124,9 @@ def add_record():
 
     global count
     if count % 2 == 0:
-        my_tree.insert(parent='', index=END, iid=count, text="Child", values=(name_box.get(), id_box.get(), topping_box.get()), tags=("evenrow",))
+        my_tree.insert(parent='', index=END, iid=count, text="Parent", values=(name_box.get(), id_box.get(), topping_box.get()), tags=("evenrow",))
     else:
-        my_tree.insert(parent='', index=END, iid=count, text="Child", values=(name_box.get(), id_box.get(), topping_box.get()), tags=("oddrow",))
+        my_tree.insert(parent='', index=END, iid=count, text="Parent", values=(name_box.get(), id_box.get(), topping_box.get()), tags=("oddrow",))
     count += 1
 
     name_box.delete(0, END)
@@ -157,10 +146,63 @@ def remove_many():
     for rec in records:
         my_tree.delete(rec)
 
+def select_record():
+    name_box.delete(0, END)
+    id_box.delete(0, END)
+    topping_box.delete(0, END)
 
-# Add an item Buttons
+    selected = my_tree.focus()
+
+    values = my_tree.item(selected,'values')
+    # temp_label.config(text=values[0])
+    # Display data in the screen
+    name_box.insert(0, values[0])
+    id_box.insert(0, values[1])
+    topping_box.insert(0, values[2])
+    
+
+def update_record():
+    selected = my_tree.focus()
+    my_tree.item(selected, text="", values=(name_box.get(), id_box.get(), topping_box.get()))
+
+    name_box.delete(0, END)
+    id_box.delete(0, END)
+    topping_box.delete(0, END)
+
+# Create Binding click function
+def clicker(e):
+    select_record()
+
+# Move up the elements
+def move_up():
+    rows = my_tree.selection()
+    for row in rows:
+        my_tree.move(row, my_tree.parent(row), my_tree.index(row) - 1)
+
+# Move down the elements
+def move_down():
+    rows = my_tree.selection()
+    for row in rows:
+        my_tree.move(row, my_tree.parent(row), my_tree.index(row) + 1)
+
+# Move Up
+move_up = Button(root, text="Move Up", command=move_up)
+move_up.pack(pady=20)
+
+# Move Down
+move_down = Button(root, text="Move Down", command=move_down)
+move_down.pack(pady=10)
+
+# Update  button
+select_button = Button(root, text="Select Record", command=select_record)
+select_button.pack(pady=10)
+
+update_button = Button(root, text="Save Record", command=update_record)
+update_button.pack(pady=10)
+
+# Add an item Button
 add_record = Button(root, text="Add Record", command=add_record)
-add_record.pack(pady=20)
+add_record.pack(pady=10)
 
 # Remove all elements
 remove_all = Button(root, text="Remove All", command=remove_all)
@@ -173,5 +215,10 @@ remove_many.pack(pady=10)
 # Remove one elements
 remove_one = Button(root, text="Remove One", command=remove_one)
 remove_one.pack(pady=10)
+
+temp_label = Label(root, text='')
+temp_label.pack(pady=20)
+
+my_tree.bind("<ButtonRelease-1>", clicker)
 
 root.mainloop();
