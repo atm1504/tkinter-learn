@@ -75,10 +75,18 @@ data = [
 # 	["Tina", 7, "Cheese"],
 # 	["Mark", 8, "Supreme"]
 # ]
+
+# Create striped row tags
+my_tree.tag_configure('oddrow', background="white")
+my_tree.tag_configure('evenrow', background="lightblue")
+
 global count
 count = 0
 for record in data:
-    my_tree.insert(parent='', index=END, iid=count, text="Parent", values=(record[0], record[1], record[2]))
+    if count % 2 == 0:
+        my_tree.insert(parent='', index=END, iid=count, text="Parent", values=(record[0], record[1], record[2]), tags=("evenrow",))
+    else:
+        my_tree.insert(parent='', index=END, iid=count, text="Parent", values=(record[0], record[1], record[2]), tags=("oddrow",))
     count += 1
 
 my_tree.pack(pady=20)
@@ -113,9 +121,16 @@ topping_box.grid(row=1, column=2)
 # my_tree.move('6', '0', '0')
 
 def add_record():
+    my_tree.tag_configure('oddrow', background="white")
+    my_tree.tag_configure('evenrow', background="lightblue")
+
     global count
-    my_tree.insert(parent='', index=END, iid=count, text="Child", values=(name_box.get(), id_box.get(), topping_box.get()))
+    if count % 2 == 0:
+        my_tree.insert(parent='', index=END, iid=count, text="Child", values=(name_box.get(), id_box.get(), topping_box.get()), tags=("evenrow",))
+    else:
+        my_tree.insert(parent='', index=END, iid=count, text="Child", values=(name_box.get(), id_box.get(), topping_box.get()), tags=("oddrow",))
     count += 1
+
     name_box.delete(0, END)
     id_box.delete(0, END)
     topping_box.delete(0, END)
